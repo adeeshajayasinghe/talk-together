@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "960036171276",
+    "project_id": "textcompetition",
+    "storage_bucket": "textcompetition.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960036171276:android:7814ead87f3c8417d7c829",
+        "android_client_info": {
+          "package_name": "com.example.textapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEoq8R67mfey3-XEWzJV8phPSBt_BgYi0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
