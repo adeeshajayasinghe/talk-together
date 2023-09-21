@@ -1,0 +1,18 @@
+Platform  Firebase App Id
+android   1:960036171276:android:7814ead87f3c8417d7c829
+ios       1:960036171276:ios:3cf1c8bc45417529d7c829
+
+
+##how to get SSH1 key for android
+1.in android application go to add fingerprint
+2. then go https://developers.google.com/android/guides/client-auth
+3. copy the command and paste in terminal to get SHA1 and SHA256 keys.
+if not work use this command - keytool -list -v -alias androiddebugkey -keystore "C:\Users\<YourUsername>\.android\debug.keystore"
+4.password = android
+5.add SHA1 to the fingerprint
+ 
+
+SHA1: C9:E9:53:FE:1D:C0:3A:D8:1E:89:E8:B1:C9:F1:9D:F2:78:47:1F:F7
+SHA256: 76:60:56:2D:46:79:A9:57:5B:7A:D7:C7:76:C9:D5:CA:05:D1:DB:0A:86:EA:D5:34:8A:CB:C3:60:8C:42:F8:06
+Signature algorithm name: SHA1withRSA (weak)
+Subject Public Key Algorithm: 2048-bit RSA key
