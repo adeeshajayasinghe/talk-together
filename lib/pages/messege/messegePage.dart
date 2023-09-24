@@ -1,14 +1,10 @@
-import 'dart:typed_data';
 
-import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:telephony/telephony.dart';
 import 'package:textapp/constants/constants.dart';
+import 'package:textapp/pages/messege/showAlert.dart';
 import 'dart:ui';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'MessegeService.dart';
 
 onBackgroundMessage(SmsMessage message) {
@@ -100,7 +96,7 @@ class _MessegeState extends State<Messege> {
                     child: Container(
                       margin: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(30),
                           bottomLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30),
@@ -194,12 +190,14 @@ class _MessegeState extends State<Messege> {
       return;
     }
     try {
-      var listener = (SendStatus status) {
-        print('Message status: $status');
+       
+
+      listener(SendStatus status) {
+      
         if (status == SendStatus.DELIVERED) {
-          _showStatusDialog('Message sent');
+          showStatusDialog(context, 'Message sent');;
         }
-      };
+      }
 
       translatedText = await translater(
           messege: messageController.text,
@@ -208,56 +206,11 @@ class _MessegeState extends State<Messege> {
           );
       telephony.sendSms(
           to: address, message: translatedText, statusListener: listener);
+    // ignore: empty_catches
     } catch (e) {
       print("Error sending message: $e");
     }
   }
 
-  void _showStatusDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Stack(
-              children: [
-                // Create a transparent background that covers the entire screen
-                Positioned.fill(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                    child: Container(
-                      color: Color.fromARGB(36, 0, 0,
-                          0), // Adjust the opacity and color as needed
-                    ),
-                  ),
-                ),
-                // Create the dialog on top of the blurred background
-                AlertDialog(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  backgroundColor: ktextAreaColor,
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        message,
-                        style: const TextStyle(
-                            color: Color.fromARGB(255, 48, 179, 199)),
-                      ),
-                      const Icon(
-                        Icons.check_circle_outline_sharp,
-                        color: Colors.green,
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-    );
-  }
+ 
 }
