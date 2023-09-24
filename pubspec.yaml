@@ -49,6 +49,8 @@ dependencies:
   url_launcher: ^6.1.14
   http: ^1.1.0
   chat_gpt_sdk: ^2.2.5
+  flutter_contacts: ^1.1.7+1
+  permission_handler: ^11.0.0
 
 dependency_overrides:
   translator: ^0.1.7

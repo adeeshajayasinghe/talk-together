@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
 import 'package:textapp/models/Countries.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 final List<Map<String, String>> messagesList = [];
@@ -57,3 +59,33 @@ Future<String> translater( {required messege,required fromL, required toL}) asyn
   // prints translation: Vorrei comprare una macchina, se avessi i soldi.
 }
 
+
+
+Future<String> getPhoneNumberByName(String contactName) async {
+  const bool kIsWeb = bool.fromEnvironment('dart.library.js_util');
+  print(kIsWeb);
+  // Request contacts permission if not granted
+
+
+  if (!kIsWeb ) {
+    print(kIsWeb);
+    final contacts = await FlutterContacts.getContacts(
+      withProperties: true,
+      withThumbnail: false,
+    );
+    final targetContact = contacts.firstWhere(
+      (contact) => contact.displayName == contactName,
+      orElse: () => Contact(),
+    );
+
+    if (targetContact != null) {
+      return targetContact.phones.isNotEmpty
+          ? targetContact.phones.first.number
+          : 'Phone number not found';
+    } else {
+      return 'Contact not found';
+    }
+  } else {
+    return 'Permission denied';
+  }
+}

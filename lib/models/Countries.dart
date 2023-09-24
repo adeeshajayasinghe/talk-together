@@ -2,11 +2,11 @@ List<String> SpeakinglanguageList = [
   "Chinese",
   "Spanish",
   "English",
+  "Tamil",
   "Hindi",
   "Arabic",
   "Portuguese",
   "Russian",
-  "Tamil",
   "Sinhala"
 ];
 
@@ -14,11 +14,11 @@ List<String> translatelanguageList = [
   "Chinese",
   "Spanish",
   "English",
+  "Tamil",
   "Hindi",
   "Arabic",
   "Portuguese",
   "Russian",
-  "Tamil",
   "Sinhala"
 ];
 
@@ -26,12 +26,12 @@ List<String> CountrieslanguageCodes = [
   'CN',
   'AR',
   'AU',
+  'TF',
   'IN',
   'AE',
   'PT',
   'Ru',
-  'TA',
-  'LK',
+  'LK'
 ];
 
 Map<String, String> CountriesLanguageCodes = {
@@ -140,4 +140,3 @@ Map<String, String> CountriesLanguageCodes = {
   'Yoruba': 'yo',
   'Zulu': 'zu',
 };
-

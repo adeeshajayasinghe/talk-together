@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:telephony/telephony.dart';
 import 'package:textapp/constants/constants.dart';
 import 'package:textapp/pages/messege/showAlert.dart';
@@ -189,6 +190,8 @@ class _MessegeState extends State<Messege> {
       return;
     }
     try {
+       
+
       listener(SendStatus status) {
       
         if (status == SendStatus.DELIVERED) {
