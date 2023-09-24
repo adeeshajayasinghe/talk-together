@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:textapp/models/Countries.dart';
 import 'package:textapp/pages/Homepage.dart';
 import 'package:textapp/pages/TakeCall.dart';
+import 'package:textapp/pages/messege/messegePage.dart';
 import 'package:textapp/servises/Auth.dart';
 import 'package:textapp/widgets/GridB.dart';
 import 'package:textapp/widgets/Selected_languge_display.dart';
@@ -28,7 +29,9 @@ class _langugeSelectionState extends State<langugeSelection> {
   void updateTranslatingLanguage(String language) {
     setState(() {
       translatingSelectedLang = language;
+    
     });
+    print(translatingSelectedLang);
   }
 
   @override
@@ -141,7 +144,11 @@ class _langugeSelectionState extends State<langugeSelection> {
                         Border.all(color: Color.fromARGB(255, 62, 56, 117))),
                 child: TextButton(
                     onPressed: () {
-                      Get.to(() => TakeCall());
+                      print(translatingSelectedLang);
+                      Get.to(() => Messege(
+                        speakingSelectedLang: speakingSelectedLang,
+                         TranslatingSelectedLang: translatingSelectedLang,
+                      ));
                     },
                     child: const Text("Next",
                         style: TextStyle(fontSize: 18, color: Colors.blue))),
