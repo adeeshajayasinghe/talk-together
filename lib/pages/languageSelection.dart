@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:textapp/models/Countries.dart';
 import 'package:textapp/pages/Homepage.dart';
 import 'package:textapp/pages/TakeCall.dart';
+import 'package:textapp/pages/text_to_voice_translation_screen.dart';
 import 'package:textapp/servises/Auth.dart';
 import 'package:textapp/widgets/GridB.dart';
 import 'package:textapp/widgets/Selected_languge_display.dart';
@@ -35,8 +36,15 @@ class _langugeSelectionState extends State<langugeSelection> {
   Widget build(BuildContext context) {
     Auth auth = Auth();
 
+    final elevatedButtonStyle = ElevatedButton.styleFrom(
+      foregroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 62, 56, 117),
+      padding: const EdgeInsets.all(10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+    );
+
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 4, 21, 51),
+      backgroundColor: const Color.fromARGB(255, 4, 21, 51),
       appBar: AppBar(
           iconTheme: const IconThemeData(
             color: Color.fromARGB(255, 255, 255, 255), //change your color here
@@ -97,7 +105,7 @@ class _langugeSelectionState extends State<langugeSelection> {
 
             //grid view of the speaking languages. it is calling from the GridB class in widget folder
             Padding(
-              padding: EdgeInsets.all(18.0),
+              padding: const EdgeInsets.all(18.0),
               child: GridB(
                   setLang: updateSpeakingLanguage,
                   languages: SpeakinglanguageList),
@@ -118,7 +126,7 @@ class _langugeSelectionState extends State<langugeSelection> {
 
             //grid view of the translating language list. it is calling from the GridB class in widget folder
             Padding(
-              padding: EdgeInsets.all(18.0),
+              padding: const EdgeInsets.all(18.0),
               child: GridB(
                   setLang: updateTranslatingLanguage,
                   languages: translatelanguageList),
@@ -137,14 +145,63 @@ class _langugeSelectionState extends State<langugeSelection> {
                 width: 150,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    border:
-                        Border.all(color: Color.fromARGB(255, 62, 56, 117))),
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 62, 56, 117))),
                 child: TextButton(
                     onPressed: () {
-                      Get.to(() => TakeCall());
+                      Get.to(() => const TakeCall());
                     },
                     child: const Text("Next",
                         style: TextStyle(fontSize: 18, color: Colors.blue))),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: const Text("--------------- OR ----------------",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic)),
+            ),Container(
+              padding: const EdgeInsets.all(10),
+              child: const Text("Convert between",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15
+                     ,
+                      fontStyle: FontStyle.italic)),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: elevatedButtonStyle,
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => const TextToVoiceScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text("Text To Voice"),
+                  ),
+                  // const Spacer(),
+                  ElevatedButton(
+                    style: elevatedButtonStyle,
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => const TextToVoiceScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text("Voice To Text"),
+                  ),
+                ],
               ),
             )
           ],
