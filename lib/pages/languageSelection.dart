@@ -4,6 +4,7 @@ import 'package:textapp/models/Countries.dart';
 import 'package:textapp/pages/Homepage.dart';
 import 'package:textapp/pages/TakeCall.dart';
 import 'package:textapp/pages/messege/messegePage.dart';
+import 'package:textapp/pages/text_to_voice_conversion_screen.dart';
 import 'package:textapp/servises/Auth.dart';
 import 'package:textapp/widgets/GridB.dart';
 import 'package:textapp/widgets/Selected_languge_display.dart';
@@ -29,7 +30,6 @@ class _langugeSelectionState extends State<langugeSelection> {
   void updateTranslatingLanguage(String language) {
     setState(() {
       translatingSelectedLang = language;
-    
     });
     print(translatingSelectedLang);
   }
@@ -37,9 +37,15 @@ class _langugeSelectionState extends State<langugeSelection> {
   @override
   Widget build(BuildContext context) {
     Auth auth = Auth();
+    final elevatedButtonStyle = ElevatedButton.styleFrom(
+      foregroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 62, 56, 117),
+      padding: const EdgeInsets.all(10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+    );
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 4, 21, 51),
+      backgroundColor: const Color.fromARGB(255, 4, 21, 51),
       appBar: AppBar(
           iconTheme: const IconThemeData(
             color: Color.fromARGB(255, 255, 255, 255), //change your color here
@@ -100,7 +106,7 @@ class _langugeSelectionState extends State<langugeSelection> {
 
             //grid view of the speaking languages. it is calling from the GridB class in widget folder
             Padding(
-              padding: EdgeInsets.all(18.0),
+              padding: const EdgeInsets.all(18.0),
               child: GridB(
                   setLang: updateSpeakingLanguage,
                   languages: SpeakinglanguageList),
@@ -121,7 +127,7 @@ class _langugeSelectionState extends State<langugeSelection> {
 
             //grid view of the translating language list. it is calling from the GridB class in widget folder
             Padding(
-              padding: EdgeInsets.all(18.0),
+              padding: const EdgeInsets.all(18.0),
               child: GridB(
                   setLang: updateTranslatingLanguage,
                   languages: translatelanguageList),
@@ -137,45 +143,86 @@ class _langugeSelectionState extends State<langugeSelection> {
               padding: const EdgeInsets.symmetric(vertical: 15.0),
               child: Container(
                 height: 50,
-            
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-
                   children: [
                     Container(
                       width: 100,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        color: Color.fromARGB(255, 141, 236, 255),
+                        color: const Color.fromARGB(255, 141, 236, 255),
                       ),
-                      child: IconButton(onPressed: 
-                      () {
-                        Get.to(const TakeCall(
-                         
-                        ));
-                      },
-                      icon: Icon(Icons.call , size: 35,),
-                        color: Color.fromARGB(255, 34, 112, 196)
-                      ),
+                      child: IconButton(
+                          onPressed: () {
+                            Get.to(const TakeCall());
+                          },
+                          icon: const Icon(
+                            Icons.call,
+                            size: 35,
+                          ),
+                          color: const Color.fromARGB(255, 34, 112, 196)),
                     ),
-                    SizedBox(width: 100),
+                    const SizedBox(width: 100),
                     Container(
                       width: 100,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        color: Color.fromARGB(255, 167, 255, 193),
+                        color: const Color.fromARGB(255, 167, 255, 193),
                       ),
-                      child: IconButton(onPressed: (){
-                        Get.to(Messege(
-                          speakingSelectedLang: speakingSelectedLang,
-                          TranslatingSelectedLang: translatingSelectedLang,
-                        ));
-                      } ,
-                      icon: Icon(Icons.message ,size: 35),
-                      color: Color.fromARGB(255, 12, 143, 97)),
-                    ),  ],
-                    
+                      child: IconButton(
+                          onPressed: () {
+                            Get.to(Messege(
+                              speakingSelectedLang: speakingSelectedLang,
+                              TranslatingSelectedLang: translatingSelectedLang,
+                            ));
+                          },
+                          icon: const Icon(Icons.message, size: 35),
+                          color: const Color.fromARGB(255, 12, 143, 97)),
+                    ),
+                  ],
                 ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+              child: const Text("--------------- OR ----------------",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic)),
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: const Text("Convert between",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontStyle: FontStyle.italic)),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: elevatedButtonStyle,
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => const TextToVoiceScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text("Text To Voice"),
+                  ),
+                  ElevatedButton(
+                    style: elevatedButtonStyle,
+                    onPressed: () {},
+                    child: const Text("Voice To Text"),
+                  ),
+                ],
               ),
             )
           ],
