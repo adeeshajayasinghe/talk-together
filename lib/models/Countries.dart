@@ -6,7 +6,8 @@ List<String> SpeakinglanguageList = [
   "Arabic",
   "Portuguese",
   "Russian",
-  "Japanese",
+  "Tamil",
+  "Sinhala"
 ];
 
 List<String> translatelanguageList = [
@@ -17,7 +18,8 @@ List<String> translatelanguageList = [
   "Arabic",
   "Portuguese",
   "Russian",
-  "Japanese",
+  "Tamil",
+  "Sinhala"
 ];
 
 List<String> CountrieslanguageCodes = [
@@ -28,7 +30,8 @@ List<String> CountrieslanguageCodes = [
   'AE',
   'PT',
   'Ru',
-  'JP'
+  'TA',
+  'LK',
 ];
 
 Map<String, String> CountriesLanguageCodes = {
