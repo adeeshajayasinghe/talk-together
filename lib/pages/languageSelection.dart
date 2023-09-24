@@ -136,22 +136,46 @@ class _langugeSelectionState extends State<langugeSelection> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15.0),
               child: Container(
-                height: 45,
-                width: 150,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border:
-                        Border.all(color: Color.fromARGB(255, 62, 56, 117))),
-                child: TextButton(
-                    onPressed: () {
-                      print(translatingSelectedLang);
-                      Get.to(() => Messege(
-                        speakingSelectedLang: speakingSelectedLang,
-                         TranslatingSelectedLang: translatingSelectedLang,
-                      ));
-                    },
-                    child: const Text("Next",
-                        style: TextStyle(fontSize: 18, color: Colors.blue))),
+                height: 50,
+            
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+
+                  children: [
+                    Container(
+                      width: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Color.fromARGB(255, 141, 236, 255),
+                      ),
+                      child: IconButton(onPressed: 
+                      () {
+                        Get.to(const TakeCall(
+                         
+                        ));
+                      },
+                      icon: Icon(Icons.call , size: 35,),
+                        color: Color.fromARGB(255, 34, 112, 196)
+                      ),
+                    ),
+                    SizedBox(width: 100),
+                    Container(
+                      width: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Color.fromARGB(255, 167, 255, 193),
+                      ),
+                      child: IconButton(onPressed: (){
+                        Get.to(Messege(
+                          speakingSelectedLang: speakingSelectedLang,
+                          TranslatingSelectedLang: translatingSelectedLang,
+                        ));
+                      } ,
+                      icon: Icon(Icons.message ,size: 35),
+                      color: Color.fromARGB(255, 12, 143, 97)),
+                    ),  ],
+                    
+                ),
               ),
             )
           ],
