@@ -121,9 +121,9 @@ class _langugeSelectionState extends State<langugeSelection> {
 
             //grid view of the translating language list. it is calling from the GridB class in widget folder
             Padding(
-              padding: EdgeInsets.all(18.0),
+              padding: const EdgeInsets.all(18.0),
               child: GridB(
-                  setLang: updateTranslatingLanguage,
+                    setLang: updateTranslatingLanguage,
                   languages: translatelanguageList),
             ),
 
@@ -132,7 +132,7 @@ class _langugeSelectionState extends State<langugeSelection> {
                 title: "Translating \nlanguage",
                 ChangingVariable: translatingSelectedLang),
 
-            //buuton go to thee call
+            //button go to thee call
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15.0),
               child: Container(
