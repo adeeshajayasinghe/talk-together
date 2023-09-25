@@ -30,7 +30,7 @@ class _langugeSelectionState extends State<langugeSelection> {
 
   void updateTranslatingLanguage(String language) {
     setState(() {
-      translatingSelectedLang = language;
+      translatingSelectedLang = CountriesLanguageCodes[language]!;
     });
     print(translatingSelectedLang);
   }
@@ -221,7 +221,7 @@ class _langugeSelectionState extends State<langugeSelection> {
                   ElevatedButton(
                     style: elevatedButtonStyle,
                     onPressed: () {
-                      Get.to(SpeechScreen());
+                      Get.to(SpeechScreen(toBeTranslateLanguage: translatingSelectedLang));
                     },
                     child: const Text("Voice To Text"),
                   ),

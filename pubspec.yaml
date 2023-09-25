@@ -55,6 +55,7 @@ dependencies:
   flutter_tts: ^3.8.3
   avatar_glow: ^2.0.2
   speech_to_text: ^6.3.0
+  translator: ^0.1.7
 
 dependency_overrides:
   translator: ^0.1.7

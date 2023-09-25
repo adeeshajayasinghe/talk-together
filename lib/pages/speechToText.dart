@@ -1,13 +1,18 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:textapp/servises/text_to_voice_service.dart';
+import 'package:translator/translator.dart';
 
+import '../models/text_to_voice_model.dart';
 import '../servises/Auth.dart';
 import 'Homepage.dart';
 
 class SpeechScreen extends StatefulWidget {
-  const SpeechScreen({super.key});
+  final String toBeTranslateLanguage;
+  const SpeechScreen({super.key,required this.toBeTranslateLanguage});
 
   @override
   State<SpeechScreen> createState() => _SpeechScreenState();
@@ -18,9 +23,13 @@ class _SpeechScreenState extends State<SpeechScreen> {
   var text = "Start";
   var islisten = false;
   Auth auth = Auth();
+  final translator = GoogleTranslator();
+  
 
   @override
   Widget build(BuildContext context) {
+    final textToVoiceModel = Provider.of<TextToVoiceModel>(context);
+    final textToSpeechService = TextToVoiceService();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 4, 21, 51),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -42,7 +51,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
                   speechtotext.listen(onResult: (value) {
                     setState(() {
                       print(value.recognizedWords);
-                      text = value.recognizedWords;
+                      text = translate(value.recognizedWords, widget.toBeTranslateLanguage);
                     });
                   });
                 });
@@ -103,19 +112,67 @@ class _SpeechScreenState extends State<SpeechScreen> {
                   fontSize: 24),
             ),
           ),
-           ElevatedButton(
-            style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(Color.fromARGB(255, 0, 3, 172)),
+           Padding(
+            padding: EdgeInsets.symmetric(horizontal:24 ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: 50,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 0, 3, 172),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        text = '';
+                      });
+                    },
+                    child: const Text(
+                      'Clear',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12,),
+                Container(
+                  height: 50,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 172, 0, 95),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: TextButton(
+                    
+                    onPressed: () {
+                      textToVoiceModel.setTextToSpeak(text); // Set text using the controller
+                      final textToSpeak = textToVoiceModel.textToSpeak;
+                      if (textToSpeak.isNotEmpty) {
+                        textToSpeechService.speak(textToSpeak);
+                      }
+                    },
+                    child: Text(
+                      'listen',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            onPressed: () {
-              setState(() {
-                text = '';
-              });
-            },
-            child: const Text('Clear',style: TextStyle(color: Colors.white),),
           ),
         ],
       ),
     );
+  }
+
+  //translate function
+  translate(String source, String toBeTranslateLanguage) async {
+    await translator.translate(source, from: 'en', to: toBeTranslateLanguage).then((value) {
+      setState(() {
+        text = value.toString();
+      });
+    });
   }
 }
