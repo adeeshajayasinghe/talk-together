@@ -89,14 +89,32 @@ class _SpeechScreenState extends State<SpeechScreen> {
                 },
                 icon: const Icon(Icons.home_filled))
           ]),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        alignment: Alignment.center,
-        child: Text(
-          text,
-          style: const TextStyle(
-              color: Color.fromARGB(255, 7, 238, 255), fontWeight: FontWeight.bold, fontSize: 24),
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 7, 238, 255),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24),
+            ),
+          ),
+           ElevatedButton(
+            style: const ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(Color.fromARGB(255, 0, 3, 172)),
+            ),
+            onPressed: () {
+              setState(() {
+                text = '';
+              });
+            },
+            child: const Text('Clear',style: TextStyle(color: Colors.white),),
+          ),
+        ],
       ),
     );
   }
