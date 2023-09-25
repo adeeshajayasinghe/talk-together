@@ -17,8 +17,9 @@ class AuthService {
         accessToken: gAuth.accessToken, idToken: gAuth.idToken);
 
     //lets sign in
-    UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
+    // UserCredential userCredential =
+    //     await FirebaseAuth.instance.signInWithCredential(credential);
+    await FirebaseAuth.instance.signInWithCredential(credential);
     Get.offAll(() => HomePage());
   }
 }

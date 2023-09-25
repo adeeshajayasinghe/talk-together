@@ -9,6 +9,7 @@ import 'package:textapp/servises/Auth.dart';
 import 'package:textapp/widgets/GridB.dart';
 import 'package:textapp/widgets/Selected_languge_display.dart';
 import 'package:textapp/widgets/Title.dart';
+import 'speechToText.dart';
 
 class langugeSelection extends StatefulWidget {
   const langugeSelection({super.key});
@@ -129,7 +130,7 @@ class _langugeSelectionState extends State<langugeSelection> {
             Padding(
               padding: const EdgeInsets.all(18.0),
               child: GridB(
-                    setLang: updateTranslatingLanguage,
+                  setLang: updateTranslatingLanguage,
                   languages: translatelanguageList),
             ),
 
@@ -219,7 +220,9 @@ class _langugeSelectionState extends State<langugeSelection> {
                   ),
                   ElevatedButton(
                     style: elevatedButtonStyle,
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(SpeechScreen());
+                    },
                     child: const Text("Voice To Text"),
                   ),
                 ],
