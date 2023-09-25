@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:telephony/telephony.dart';
@@ -39,6 +38,8 @@ class _MessegeState extends State<Messege> {
       fetchMessages();
     });
   }
+
+  int clicked = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +83,7 @@ class _MessegeState extends State<Messege> {
                 itemBuilder: (context, index) {
                   SmsMessage message = messages[index];
                   return GestureDetector(
-                     onTap: () async {
+                    onTap: () async {
                       // Translate the message when clicked
                       String translatedMessage = await translater(
                         messege: message.body,
@@ -90,12 +91,17 @@ class _MessegeState extends State<Messege> {
                         toL: widget.TranslatingSelectedLang,
                       );
                       setState(() {
+                        clicked = index;
+                        
                         message.body = translatedMessage;
                       });
                     },
                     child: Container(
                       margin: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
+                        color: clicked == index
+                            ? Color.fromARGB(255, 0, 0, 0)
+                            : Color.fromARGB(255, 0, 47, 72),
                         borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(30),
                           bottomLeft: Radius.circular(30),
@@ -149,7 +155,8 @@ class _MessegeState extends State<Messege> {
                     color: kbuttonColor,
                     onPressed: () async {
                       translatedText = '';
-                      sendMessage();
+                      sendMessage(message: messageController.text);
+                      messageController.clear();
                     },
                     icon: Icon(Icons.send),
                   ),
@@ -167,50 +174,53 @@ class _MessegeState extends State<Messege> {
   Future<void> fetchMessages() async {
     try {
       String phoneNumber = phoneNumberController.text;
-      SmsFilter filter;
+ 
 
-      filter = SmsFilter.where(SmsColumn.ADDRESS)
-          .like('${phoneNumber}%'); // fetch all '%'
+      final SmsFilter inboxFilter = SmsFilter.where(SmsColumn.ADDRESS).like('$phoneNumber%');
+      final SmsFilter sentFilter = SmsFilter.where(SmsColumn.ADDRESS).equals(phoneNumber);
 
-      List<SmsMessage> inboxMessages =
-          await telephony.getInboxSms(filter: filter);
+     final List<SmsMessage> inboxMessages = await telephony.getInboxSms(filter: inboxFilter);
+    final List<SmsMessage> sentMessages = await telephony.getSentSms(filter: sentFilter);
+
+      List<SmsMessage> chatHistory = [...inboxMessages, ...sentMessages];
+        chatHistory.sort((a, b) => (a.dateSent ?? 0).compareTo(b.dateSent ?? 0));
 
       setState(() {
-        messages = inboxMessages;
+        messages = chatHistory;
       });
     } catch (e) {
       print("Error fetching and translating messages: $e");
     }
+
+
+
+
+
   }
 
-  Future<void> sendMessage() async {
+  Future<void> sendMessage({required String message}) async {
     var address = phoneNumberController.text;
-    var message = messageController.text;
     if (address.isEmpty || message.isEmpty) {
       return;
     }
     try {
-       
-
       listener(SendStatus status) {
-      
         if (status == SendStatus.DELIVERED) {
-          showStatusDialog(context, 'Message sent');;
+          showStatusDialog(context, 'Message sent');
+          ;
         }
       }
 
       translatedText = await translater(
-          messege: messageController.text,
-          fromL: widget.TranslatingSelectedLang,
-          toL: widget.speakingSelectedLang,
-          );
+        messege: messageController.text,
+        fromL: widget.TranslatingSelectedLang,
+        toL: widget.speakingSelectedLang,
+      );
       telephony.sendSms(
           to: address, message: translatedText, statusListener: listener);
-    // ignore: empty_catches
+      // ignore: empty_catches
     } catch (e) {
       print("Error sending message: $e");
     }
   }
-
- 
 }
