@@ -1,21 +1,27 @@
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:textapp/models/Countries.dart';
 
 class GridB extends StatefulWidget {
   final Function(String) setLang;
   final List<String> languages;
   const GridB({super.key, required this.setLang, required this.languages});
+  
 
   @override
   State<GridB> createState() => _GridBState();
 }
 
 class _GridBState extends State<GridB> {
+  int clicked = 0;
   @override
   Widget build(BuildContext context) {
+
+    
     return GestureDetector(
       onTap: () {
+        
         print("clicked");
       },
       child: GridView.builder(
@@ -31,13 +37,18 @@ class _GridBState extends State<GridB> {
         itemBuilder: (_, index) {
           return InkWell(
             onTap: () {
+              setState(() {
+                clicked =index;
+              }); 
+              
+            
               String selectedLanguage = widget.languages[index];
               widget.setLang(selectedLanguage);
             },
             child: Container(
               decoration: BoxDecoration(
                   border: Border.all(color: Color.fromARGB(255, 0, 238, 255)),
-                  color: Colors.white24,
+                  color: (index.isEqual(clicked))? Color.fromARGB(255, 255, 255, 255) : Color.fromARGB(255, 29, 108, 186),
                   borderRadius: BorderRadius.circular(12)),
               child: Center(
                   child: Padding(
