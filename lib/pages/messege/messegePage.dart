@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:telephony/telephony.dart';
@@ -6,6 +5,7 @@ import 'package:textapp/constants/constants.dart';
 import 'package:textapp/pages/messege/showAlert.dart';
 import 'dart:ui';
 import 'MessegeService.dart';
+import 'package:intl/intl.dart';
 
 onBackgroundMessage(SmsMessage message) {
   debugPrint("onBackgroundMessage called");
@@ -39,6 +39,8 @@ class _MessegeState extends State<Messege> {
       fetchMessages();
     });
   }
+
+  int clicked = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,7 @@ class _MessegeState extends State<Messege> {
                 itemBuilder: (context, index) {
                   SmsMessage message = messages[index];
                   return GestureDetector(
-                     onTap: () async {
+                    onTap: () async {
                       // Translate the message when clicked
                       String translatedMessage = await translater(
                         messege: message.body,
@@ -90,29 +92,66 @@ class _MessegeState extends State<Messege> {
                         toL: widget.TranslatingSelectedLang,
                       );
                       setState(() {
+                        clicked = index;
+
                         message.body = translatedMessage;
                       });
                     },
-                    child: Container(
-                      margin: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30),
+                    child: Row(
+                      mainAxisAlignment: message.subject == 'sent'
+                          ? MainAxisAlignment.end
+                          : MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          margin: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: clicked == index
+                                ? Color.fromARGB(255, 0, 0, 0)
+                                : Color.fromARGB(255, 0, 47, 72),
+                            borderRadius: message.subject == 'sent'
+                                ? const BorderRadius.only(
+                                    topLeft: Radius.circular(30),
+                                    bottomLeft: Radius.circular(30),
+                                    bottomRight: Radius.circular(30),
+                                  )
+                                : const BorderRadius.only(
+                                    topRight: Radius.circular(30),
+                                    bottomLeft: Radius.circular(30),
+                                    bottomRight: Radius.circular(30),
+                                  ),
+                            border: Border.all(color: kborderColor, width: 1),
+                          ),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                title: Text(
+                                  '${message.address}',
+                                  style: TextStyle(color: ktextsenderColor),
+                                ),
+                                subtitle: Text(
+                                  '${message.body}',
+                                  style: TextStyle(color: ktextmessegeColor),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 12.0, bottom: 8),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      '${DateFormat('yyyy-MM-dd HH:mm').format(DateTime.fromMillisecondsSinceEpoch(int.parse(message.date.toString())))}',
+                                      style:
+                                          TextStyle(color: ktextmessegeColor),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                        border: Border.all(color: kborderColor, width: 1),
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          '${message.address}',
-                          style: TextStyle(color: ktextsenderColor),
-                        ),
-                        subtitle: Text(
-                          '${message.body}',
-                          style: TextStyle(color: ktextmessegeColor),
-                        ),
-                      ),
+                      ],
                     ),
                   );
                 },
@@ -149,7 +188,8 @@ class _MessegeState extends State<Messege> {
                     color: kbuttonColor,
                     onPressed: () async {
                       translatedText = '';
-                      sendMessage();
+                      sendMessage(message: messageController.text);
+                      messageController.clear();
                     },
                     icon: Icon(Icons.send),
                   ),
@@ -170,47 +210,54 @@ class _MessegeState extends State<Messege> {
       SmsFilter filter;
 
       filter = SmsFilter.where(SmsColumn.ADDRESS)
-          .like('${phoneNumber}%'); // fetch all '%'
+          .like('%${phoneNumber}'); // fetch all '%'
 
       List<SmsMessage> inboxMessages =
           await telephony.getInboxSms(filter: filter);
+      List<SmsMessage> sentMessages =
+          await telephony.getSentSms(filter: filter);
+
+      // Add a "received" tag to inboxMessages and a "sent" tag to sentMessages
+      List<SmsMessage> taggedInboxMessages = inboxMessages.map((message) {
+        message.subject = 'received';
+        return message;
+      }).toList();
+      List<SmsMessage> taggedSentMessages = sentMessages.map((message) {
+        message.subject = 'sent';
+        return message;
+      }).toList();
 
       setState(() {
-        messages = inboxMessages;
+        messages = [...taggedInboxMessages, ...taggedSentMessages];
       });
     } catch (e) {
       print("Error fetching and translating messages: $e");
     }
   }
 
-  Future<void> sendMessage() async {
+  Future<void> sendMessage({required String message}) async {
     var address = phoneNumberController.text;
-    var message = messageController.text;
     if (address.isEmpty || message.isEmpty) {
       return;
     }
     try {
-       
-
       listener(SendStatus status) {
-      
         if (status == SendStatus.DELIVERED) {
-          showStatusDialog(context, 'Message sent');;
+          showStatusDialog(context, 'Message sent');
+          ;
         }
       }
 
       translatedText = await translater(
-          messege: messageController.text,
-          fromL: widget.TranslatingSelectedLang,
-          toL: widget.speakingSelectedLang,
-          );
+        messege: messageController.text,
+        fromL: widget.TranslatingSelectedLang,
+        toL: widget.speakingSelectedLang,
+      );
       telephony.sendSms(
           to: address, message: translatedText, statusListener: listener);
-    // ignore: empty_catches
+      // ignore: empty_catches
     } catch (e) {
       print("Error sending message: $e");
     }
   }
-
- 
 }
