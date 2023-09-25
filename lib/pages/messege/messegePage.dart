@@ -5,6 +5,7 @@ import 'package:textapp/constants/constants.dart';
 import 'package:textapp/pages/messege/showAlert.dart';
 import 'dart:ui';
 import 'MessegeService.dart';
+import 'package:intl/intl.dart';
 
 onBackgroundMessage(SmsMessage message) {
   debugPrint("onBackgroundMessage called");
@@ -92,33 +93,65 @@ class _MessegeState extends State<Messege> {
                       );
                       setState(() {
                         clicked = index;
-                        
+
                         message.body = translatedMessage;
                       });
                     },
-                    child: Container(
-                      margin: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: clicked == index
-                            ? Color.fromARGB(255, 0, 0, 0)
-                            : Color.fromARGB(255, 0, 47, 72),
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(30),
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30),
+                    child: Row(
+                      mainAxisAlignment: message.subject == 'sent'
+                          ? MainAxisAlignment.end
+                          : MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          margin: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: clicked == index
+                                ? Color.fromARGB(255, 0, 0, 0)
+                                : Color.fromARGB(255, 0, 47, 72),
+                            borderRadius: message.subject == 'sent'
+                                ? const BorderRadius.only(
+                                    topLeft: Radius.circular(30),
+                                    bottomLeft: Radius.circular(30),
+                                    bottomRight: Radius.circular(30),
+                                  )
+                                : const BorderRadius.only(
+                                    topRight: Radius.circular(30),
+                                    bottomLeft: Radius.circular(30),
+                                    bottomRight: Radius.circular(30),
+                                  ),
+                            border: Border.all(color: kborderColor, width: 1),
+                          ),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                title: Text(
+                                  '${message.address}',
+                                  style: TextStyle(color: ktextsenderColor),
+                                ),
+                                subtitle: Text(
+                                  '${message.body}',
+                                  style: TextStyle(color: ktextmessegeColor),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 12.0, bottom: 8),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      '${DateFormat('yyyy-MM-dd HH:mm').format(DateTime.fromMillisecondsSinceEpoch(int.parse(message.date.toString())))}',
+                                      style:
+                                          TextStyle(color: ktextmessegeColor),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                        border: Border.all(color: kborderColor, width: 1),
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          '${message.address}',
-                          style: TextStyle(color: ktextsenderColor),
-                        ),
-                        subtitle: Text(
-                          '${message.body}',
-                          style: TextStyle(color: ktextmessegeColor),
-                        ),
-                      ),
+                      ],
                     ),
                   );
                 },
@@ -174,28 +207,32 @@ class _MessegeState extends State<Messege> {
   Future<void> fetchMessages() async {
     try {
       String phoneNumber = phoneNumberController.text;
- 
+      SmsFilter filter;
 
-      final SmsFilter inboxFilter = SmsFilter.where(SmsColumn.ADDRESS).like('$phoneNumber%');
-      final SmsFilter sentFilter = SmsFilter.where(SmsColumn.ADDRESS).equals(phoneNumber);
+      filter = SmsFilter.where(SmsColumn.ADDRESS)
+          .like('%${phoneNumber}'); // fetch all '%'
 
-     final List<SmsMessage> inboxMessages = await telephony.getInboxSms(filter: inboxFilter);
-    final List<SmsMessage> sentMessages = await telephony.getSentSms(filter: sentFilter);
+      List<SmsMessage> inboxMessages =
+          await telephony.getInboxSms(filter: filter);
+      List<SmsMessage> sentMessages =
+          await telephony.getSentSms(filter: filter);
 
-      List<SmsMessage> chatHistory = [...inboxMessages, ...sentMessages];
-        chatHistory.sort((a, b) => (a.dateSent ?? 0).compareTo(b.dateSent ?? 0));
+      // Add a "received" tag to inboxMessages and a "sent" tag to sentMessages
+      List<SmsMessage> taggedInboxMessages = inboxMessages.map((message) {
+        message.subject = 'received';
+        return message;
+      }).toList();
+      List<SmsMessage> taggedSentMessages = sentMessages.map((message) {
+        message.subject = 'sent';
+        return message;
+      }).toList();
 
       setState(() {
-        messages = chatHistory;
+        messages = [...taggedInboxMessages, ...taggedSentMessages];
       });
     } catch (e) {
       print("Error fetching and translating messages: $e");
     }
-
-
-
-
-
   }
 
   Future<void> sendMessage({required String message}) async {
