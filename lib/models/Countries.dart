@@ -1,5 +1,5 @@
 List<String> SpeakinglanguageList = [
-  "Chinese",
+  "Korean",
   "Spanish",
   "English",
   "Tamil",
@@ -11,7 +11,7 @@ List<String> SpeakinglanguageList = [
 ];
 
 List<String> translatelanguageList = [
-  "Chinese",
+  "Korean",
   "Spanish",
   "English",
   "Tamil",
@@ -23,7 +23,7 @@ List<String> translatelanguageList = [
 ];
 
 List<String> CountrieslanguageCodes = [
-  'CN',
+  'KR',
   'AR',
   'AU',
   'TF',
