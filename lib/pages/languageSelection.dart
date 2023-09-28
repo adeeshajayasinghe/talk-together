@@ -9,6 +9,7 @@ import 'package:textapp/servises/Auth.dart';
 import 'package:textapp/widgets/GridB.dart';
 import 'package:textapp/widgets/Selected_languge_display.dart';
 import 'package:textapp/widgets/Title.dart';
+import 'package:textapp/pages/SubscriptionPage.dart';
 
 class langugeSelection extends StatefulWidget {
   const langugeSelection({super.key});
@@ -224,7 +225,35 @@ class _langugeSelectionState extends State<langugeSelection> {
                   ),
                 ],
               ),
-            )
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+              child: const Text("------- Get Full Experience -------",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic)),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 20, 10, 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: elevatedButtonStyle,
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => SubscriptionApp(),
+                        ),
+                      );
+                    },
+                    child: const Text("Subscribe Now"),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
