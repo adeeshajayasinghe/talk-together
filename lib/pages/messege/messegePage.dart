@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+//import 'package:permission_handler/permission_handler.dart';
 import 'package:telephony/telephony.dart';
 import 'package:textapp/constants/constants.dart';
 import 'package:textapp/pages/messege/showAlert.dart';
 import 'dart:ui';
-import 'MessegeService.dart';
+
+import '../../servises/Auth.dart';
+import '../../servises/MessegeService.dart';
+import '../Homepage.dart';
 import 'package:intl/intl.dart';
+
 
 onBackgroundMessage(SmsMessage message) {
   debugPrint("onBackgroundMessage called");
@@ -44,13 +50,35 @@ class _MessegeState extends State<Messege> {
 
   @override
   Widget build(BuildContext context) {
+
+    Auth auth = Auth();
+    
     return Scaffold(
       appBar: AppBar(
+         iconTheme: const IconThemeData(
+          color: Color.fromARGB(255, 255, 255, 255), //change your color here
+        ),
         title: const Text(
           'Messenger',
           style: TextStyle(color: kappBartitleColor),
         ),
         backgroundColor: Colors.black,
+        actions: [
+            if (Auth.login)
+              TextButton(
+                  onPressed: () {
+                    auth.SignOut();
+                  },
+                  child: const Text(
+                    "Log Out",
+                    style: TextStyle(fontSize: 18, color: Colors.blue),
+                  )),
+            IconButton(
+                onPressed: () {
+                  Get.offAll(HomePage());
+                },
+                icon: const Icon(Icons.home_filled))
+          ]
       ),
       body: Container(
         decoration: BoxDecoration(color: kbackgroundColor),

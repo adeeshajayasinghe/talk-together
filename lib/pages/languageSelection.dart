@@ -9,6 +9,7 @@ import 'package:textapp/servises/Auth.dart';
 import 'package:textapp/widgets/GridB.dart';
 import 'package:textapp/widgets/Selected_languge_display.dart';
 import 'package:textapp/widgets/Title.dart';
+import 'speechToText.dart';
 
 class langugeSelection extends StatefulWidget {
   const langugeSelection({super.key});
@@ -29,7 +30,7 @@ class _langugeSelectionState extends State<langugeSelection> {
 
   void updateTranslatingLanguage(String language) {
     setState(() {
-      translatingSelectedLang = language;
+      translatingSelectedLang = CountriesLanguageCodes[language]!;
     });
     print(translatingSelectedLang);
   }
@@ -138,7 +139,7 @@ class _langugeSelectionState extends State<langugeSelection> {
                 title: "Translating \nlanguage",
                 ChangingVariable: translatingSelectedLang),
 
-            //buuton go to thee call
+            //button go to thee call
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15.0),
               child: Container(
@@ -219,7 +220,9 @@ class _langugeSelectionState extends State<langugeSelection> {
                   ),
                   ElevatedButton(
                     style: elevatedButtonStyle,
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(SpeechScreen(toBeTranslateLanguage: translatingSelectedLang));
+                    },
                     child: const Text("Voice To Text"),
                   ),
                 ],

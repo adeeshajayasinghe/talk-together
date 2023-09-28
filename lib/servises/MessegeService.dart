@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
 import 'package:textapp/models/Countries.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
-import 'package:permission_handler/permission_handler.dart';
+//import 'package:permission_handler/permission_handler.dart';
 
 
 final List<Map<String, String>> messagesList = [];
