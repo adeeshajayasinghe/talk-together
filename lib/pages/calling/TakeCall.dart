@@ -67,6 +67,20 @@ class TakeCall extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              'After you hit call button you will redirect to the transaltion page.',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 7, 238, 255),
+                  fontSize: 20,
+                  fontFamily: AutofillHints.birthdayDay),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           Inputs(
               keyboardType: TextInputType.phone,
               inputController: phonenNumber,
@@ -76,25 +90,37 @@ class TakeCall extends StatelessWidget {
           Container(
             decoration: const BoxDecoration(color: Colors.black26),
             child: Center(
-                child: ElevatedButton(
-                    onPressed: () async {
-                      _callNumber(context,toBeTranslateLanguage);
-                      
-                    },
-                    child: Text("call"))),
-          ),
+              child: Container(
+                  height: 50,
+                  width: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Color.fromARGB(255, 128, 255, 170)),
+                  child: TextButton(
+                      onPressed: () async {
+                        _callNumber(context, toBeTranslateLanguage);
+                      },
+                      child: const Icon(
+                        Icons.call,
+                        size: 34,
+                      ))),
+            ),
+          )
         ],
       ),
     );
   }
 
-  _callNumber(BuildContext context,String languageToBeTrnslate) async {
+  _callNumber(BuildContext context, String languageToBeTrnslate) async {
     String number = phonenNumber.text; //set the number here
     await FlutterPhoneDirectCaller.callNumber(number);
     // ignore: use_build_context_synchronously
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SpeechScreen(toBeTranslateLanguage: languageToBeTrnslate,)),
+      MaterialPageRoute(
+          builder: (context) => SpeechScreen(
+                toBeTranslateLanguage: languageToBeTrnslate,
+              )),
     );
   }
 }
