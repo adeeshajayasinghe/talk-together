@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:textapp/pages/Homepage.dart';
 import 'package:textapp/pages/SignUp.dart';
-import 'package:textapp/servises/Auth.dart';
-import 'package:textapp/servises/googleSignIn.dart';
+
 import 'package:textapp/widgets/Title.dart';
 import 'package:textapp/widgets/inputs.dart';
+
+import '../servises/LoginApi.dart';
 
 class LogIn extends StatelessWidget {
   const LogIn({super.key});
@@ -15,9 +16,10 @@ class LogIn extends StatelessWidget {
     final UserName = TextEditingController();
     final password = TextEditingController();
 
-    //Auth() class instance to call Authentication  method
-    Auth auth = Auth();
-    AuthService google = AuthService();
+
+    //AuthService google = AuthService();
+    final ApiServiceLogin _apiService =
+        ApiServiceLogin(); // instance of ApiService
 
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 4, 21, 51),
@@ -28,7 +30,7 @@ class LogIn extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         title: const Text(
-          "transPeaker",
+          "Talk Together",
           style: TextStyle(color: Colors.white),
         ),
         actions: [
@@ -64,13 +66,15 @@ class LogIn extends StatelessWidget {
             ),
             //fullName input
             Inputs(
-                title: "User Name/Email",
+              keyboardType: TextInputType.phone,
+                title: "phone Number",
                 hide: false,
                 inputController: UserName,
-                icon: Icon(Icons.person_2_rounded)),
+                icon: Icon(Icons.phone)),
 
             //email input
             Inputs(
+              keyboardType: TextInputType.visiblePassword,
                 hide: true,
                 title: "Password",
                 inputController: password,
@@ -113,44 +117,16 @@ class LogIn extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
-                    onPressed: () {
-                      auth.signInUser(UserName.text, password.text);
+                    onPressed: () async{
+                      //auth.signInUser(UserName.text, password.text);
+                      await _apiService.login(
+                              context, UserName.text, password.text);
                     },
                   ),
                 ),
                 const SizedBox(height: 10),
 
-                //google sign in button
-                Container(
-                  height: 50,
-                  width: 250,
-                  decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      borderRadius: BorderRadius.circular(12)),
-                  child: TextButton(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Image.asset("Assets/7123025_logo_google_g_icon.png"),
-                        const Text(
-                          "Google Sign in",
-                          style: TextStyle(
-                              fontSize: 23,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                      ],
-                    ),
-                    onPressed: () {
-                      //auth.signInUser(UserName.text, password.text);
-                      //Sign in with google
-                      google.signInWithGoogle();
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
+            
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

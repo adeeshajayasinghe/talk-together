@@ -5,11 +5,13 @@ import 'package:textapp/pages/SignUp.dart';
 import 'package:textapp/pages/languageSelection.dart';
 import 'package:textapp/pages/logIn.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:textapp/servises/Auth.dart';
+
+
+import '../servises/AuthManager.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
-  Auth auth = Auth();
+
 
   HomePage({super.key}); //instance of Auth class
 
@@ -25,7 +27,7 @@ class HomePage extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           ),
           actions: [
-            if (!Auth.login)
+            if (!AuthManager.isLoggedIn)
               Row(
                 children: [
                   TextButton(
@@ -46,10 +48,10 @@ class HomePage extends StatelessWidget {
                       )),
                 ],
               ),
-            if (Auth.login)
+            if (AuthManager.isLoggedIn)
               TextButton(
                   onPressed: () {
-                    auth.SignOut();
+                   
                   },
                   child: const Text(
                     "Log Out",
@@ -89,7 +91,7 @@ class HomePage extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    "Talk Together translates and connects you with people from across the globe, making language barriers a thing o the past",
+                    "Talk Together translates and connects you with people from across the globe, making language barriers a thing to the past",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color.fromARGB(255, 255, 255, 255),
@@ -142,8 +144,9 @@ class HomePage extends StatelessWidget {
   }
 
   _getStarted(BuildContext context) {
-    if (Auth.login) {
+    if (AuthManager.isLoggedIn) {
       Get.to(() => langugeSelection());
+      //Get.to(Calling());
     } else {
       QuickAlert.show(
         context: context,
