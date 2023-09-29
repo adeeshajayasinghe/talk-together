@@ -155,7 +155,7 @@ class _langugeSelectionState extends State<langugeSelection> {
                       child: IconButton(
                           onPressed: () {
                             Get.to( TakeCall(
-                              
+                              toBeTranslateLanguage: translatingSelectedLang,
                             ));
                           },
                           icon: const Icon(
