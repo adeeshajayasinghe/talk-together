@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:textapp/pages/SignUp.dart';
 import 'package:textapp/pages/logIn.dart';
 import 'package:textapp/servises/subcription.dart';
@@ -55,7 +56,7 @@ class TakeCall extends StatelessWidget {
             if (AuthManager.isLoggedIn)
               TextButton(
                   onPressed: () {
-                    
+                    AuthManager.logout();
                   },
                   child: const Text(
                     "Log Out",
@@ -76,7 +77,8 @@ class TakeCall extends StatelessWidget {
             child: Center(
                 child: ElevatedButton(
                     onPressed: () async {
-                      await sub.checkSubscription();
+                      _callNumber();
+                      
                     },
                     child: Text("call"))),
           ),
@@ -88,5 +90,6 @@ class TakeCall extends StatelessWidget {
   _callNumber() async {
     String number = phonenNumber.text; //set the number here
     await FlutterPhoneDirectCaller.callNumber(number);
+    Get.to(SpeechToText());
   }
 }

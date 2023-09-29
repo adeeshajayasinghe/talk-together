@@ -12,7 +12,7 @@ import 'Homepage.dart';
 
 class SpeechScreen extends StatefulWidget {
   final String toBeTranslateLanguage;
-  const SpeechScreen({super.key,required this.toBeTranslateLanguage});
+  const SpeechScreen({super.key, required this.toBeTranslateLanguage});
 
   @override
   State<SpeechScreen> createState() => _SpeechScreenState();
@@ -23,7 +23,6 @@ class _SpeechScreenState extends State<SpeechScreen> {
   var text = "Start";
   var islisten = false;
   final translator = GoogleTranslator();
-  
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +49,8 @@ class _SpeechScreenState extends State<SpeechScreen> {
                   speechtotext.listen(onResult: (value) {
                     setState(() {
                       print(value.recognizedWords);
-                      text = translate(value.recognizedWords, widget.toBeTranslateLanguage);
+                      text = translate(
+                          value.recognizedWords, widget.toBeTranslateLanguage);
                     });
                   });
                 });
@@ -85,7 +85,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
             if (AuthManager.isLoggedIn)
               TextButton(
                   onPressed: () {
-                  
+                    AuthManager.logout();
                   },
                   child: const Text(
                     "Log Out",
@@ -113,8 +113,8 @@ class _SpeechScreenState extends State<SpeechScreen> {
               ),
             ),
           ),
-           Padding(
-            padding: EdgeInsets.symmetric(horizontal:24 ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -137,7 +137,9 @@ class _SpeechScreenState extends State<SpeechScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 12,),
+                const SizedBox(
+                  height: 12,
+                ),
                 Container(
                   height: 50,
                   width: 200,
@@ -146,9 +148,9 @@ class _SpeechScreenState extends State<SpeechScreen> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: TextButton(
-                    
                     onPressed: () {
-                      textToVoiceModel.setTextToSpeak(text); // Set text using the controller
+                      textToVoiceModel.setTextToSpeak(
+                          text); // Set text using the controller
                       final textToSpeak = textToVoiceModel.textToSpeak;
                       if (textToSpeak.isNotEmpty) {
                         textToSpeechService.speak(textToSpeak);
@@ -170,7 +172,9 @@ class _SpeechScreenState extends State<SpeechScreen> {
 
   //translate function
   translate(String source, String toBeTranslateLanguage) async {
-    await translator.translate(source, from: 'en', to: toBeTranslateLanguage).then((value) {
+    await translator
+        .translate(source, from: 'en', to: toBeTranslateLanguage)
+        .then((value) {
       setState(() {
         text = value.toString();
       });

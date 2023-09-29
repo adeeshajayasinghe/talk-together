@@ -6,13 +6,10 @@ import 'package:textapp/pages/languageSelection.dart';
 import 'package:textapp/pages/logIn.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 import '../servises/AuthManager.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
-
-
   HomePage({super.key}); //instance of Auth class
 
   @override
@@ -51,7 +48,7 @@ class HomePage extends StatelessWidget {
             if (AuthManager.isLoggedIn)
               TextButton(
                   onPressed: () {
-                   
+                    AuthManager.logout();
                   },
                   child: const Text(
                     "Log Out",
@@ -153,7 +150,7 @@ class HomePage extends StatelessWidget {
         type: QuickAlertType.error,
         animType: QuickAlertAnimType.rotate,
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        title: "Please Register",
+        title: "Please Login",
       );
     }
   }
