@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:textapp/models/Countries.dart';
 import 'package:textapp/pages/Homepage.dart';
-import 'package:textapp/pages/TakeCall.dart';
+import 'package:textapp/pages/calling/TakeCall.dart';
 import 'package:textapp/pages/messege/messegePage.dart';
 import 'package:textapp/pages/text_to_voice_conversion_screen.dart';
-import 'package:textapp/servises/Auth.dart';
+
 import 'package:textapp/widgets/GridB.dart';
 import 'package:textapp/widgets/Selected_languge_display.dart';
 import 'package:textapp/widgets/Title.dart';
@@ -37,7 +37,6 @@ class _langugeSelectionState extends State<langugeSelection> {
 
   @override
   Widget build(BuildContext context) {
-    Auth auth = Auth();
     final elevatedButtonStyle = ElevatedButton.styleFrom(
       foregroundColor: Colors.white,
       backgroundColor: const Color.fromARGB(255, 62, 56, 117),
@@ -57,10 +56,10 @@ class _langugeSelectionState extends State<langugeSelection> {
             style: TextStyle(color: Colors.white),
           ),
           actions: [
-            if (Auth.login)
+    
               TextButton(
                   onPressed: () {
-                    auth.SignOut();
+                  
                   },
                   child: const Text(
                     "Log Out",
@@ -155,7 +154,9 @@ class _langugeSelectionState extends State<langugeSelection> {
                       ),
                       child: IconButton(
                           onPressed: () {
-                            Get.to(const TakeCall());
+                            Get.to( TakeCall(
+                              
+                            ));
                           },
                           icon: const Icon(
                             Icons.call,

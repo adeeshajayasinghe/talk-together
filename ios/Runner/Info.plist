@@ -15,6 +15,10 @@
 				<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
 				<string>com.googleusercontent.apps.960036171276-i6bcbmtcj2tcm3f93o91urvgsvbkut2c</string>
 			</array>
+			<key>LSApplicationQueriesSchemes</key>
+				<array>
+					<string>tel</string>
+				</array>
 		</dict>
 	</array>
 	<!-- End of the Google Sign-in Section -->

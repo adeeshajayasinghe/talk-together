@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:textapp/pages/Homepage.dart';
+import 'package:textapp/servises/AuthManager.dart';
 import '../models/text_to_voice_model.dart';
-import '../servises/Auth.dart';
 import '../servises/text_to_voice_service.dart';
 
 class TextToVoiceScreen extends StatefulWidget {
@@ -35,7 +35,6 @@ class _TextToVoiceScreenState extends State<TextToVoiceScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
     );
 
-    Auth auth = Auth();
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 4, 21, 51),
@@ -49,10 +48,10 @@ class _TextToVoiceScreenState extends State<TextToVoiceScreen> {
             style: TextStyle(color: Colors.white),
           ),
           actions: [
-            if (Auth.login)
+            if (AuthManager.isLoggedIn)
               TextButton(
                   onPressed: () {
-                    auth.SignOut();
+            
                   },
                   child: const Text(
                     "Log Out",

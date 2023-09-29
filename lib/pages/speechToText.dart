@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:textapp/servises/AuthManager.dart';
 import 'package:textapp/servises/text_to_voice_service.dart';
 import 'package:translator/translator.dart';
 
 import '../models/text_to_voice_model.dart';
-import '../servises/Auth.dart';
 import 'Homepage.dart';
 
 class SpeechScreen extends StatefulWidget {
@@ -22,7 +22,6 @@ class _SpeechScreenState extends State<SpeechScreen> {
   SpeechToText speechtotext = SpeechToText();
   var text = "Start";
   var islisten = false;
-  Auth auth = Auth();
   final translator = GoogleTranslator();
   
 
@@ -83,10 +82,10 @@ class _SpeechScreenState extends State<SpeechScreen> {
             style: TextStyle(color: Colors.white),
           ),
           actions: [
-            if (Auth.login)
+            if (AuthManager.isLoggedIn)
               TextButton(
                   onPressed: () {
-                    auth.SignOut();
+                  
                   },
                   child: const Text(
                     "Log Out",
@@ -101,15 +100,17 @@ class _SpeechScreenState extends State<SpeechScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            alignment: Alignment.center,
-            child: Text(
-              text,
-              style: const TextStyle(
-                  color: Color.fromARGB(255, 7, 238, 255),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24),
+          SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              alignment: Alignment.center,
+              child: Text(
+                text,
+                style: const TextStyle(
+                    color: Color.fromARGB(255, 7, 238, 255),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24),
+              ),
             ),
           ),
            Padding(

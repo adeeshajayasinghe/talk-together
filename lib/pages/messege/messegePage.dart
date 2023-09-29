@@ -5,9 +5,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:telephony/telephony.dart';
 import 'package:textapp/constants/constants.dart';
 import 'package:textapp/pages/messege/showAlert.dart';
+import 'package:textapp/servises/AuthManager.dart';
 import 'dart:ui';
-
-import '../../servises/Auth.dart';
 import '../../servises/MessegeService.dart';
 import '../Homepage.dart';
 import 'package:intl/intl.dart';
@@ -50,8 +49,6 @@ class _MessegeState extends State<Messege> {
 
   @override
   Widget build(BuildContext context) {
-
-    Auth auth = Auth();
     
     return Scaffold(
       appBar: AppBar(
@@ -64,10 +61,10 @@ class _MessegeState extends State<Messege> {
         ),
         backgroundColor: Colors.black,
         actions: [
-            if (Auth.login)
+            if (AuthManager.isLoggedIn)
               TextButton(
                   onPressed: () {
-                    auth.SignOut();
+                 
                   },
                   child: const Text(
                     "Log Out",
@@ -169,7 +166,7 @@ class _MessegeState extends State<Messege> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text(
-                                      '${DateFormat('yyyy-MM-dd HH:mm').format(DateTime.fromMillisecondsSinceEpoch(int.parse(message.date.toString())))}',
+                                      DateFormat('yyyy-MM-dd HH:mm').format(DateTime.fromMillisecondsSinceEpoch(int.parse(message.date.toString()))),
                                       style:
                                           TextStyle(color: ktextmessegeColor),
                                     ),

@@ -5,11 +5,13 @@ class Inputs extends StatelessWidget {
   final String title;
   final Widget icon;
   final bool hide;
+  final TextInputType keyboardType;
   const Inputs(
       {super.key,
       required this.inputController,
       required this.title,
       required this.icon,
+      required this.keyboardType,
       required this.hide});
 
   @override
@@ -32,6 +34,7 @@ class Inputs extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              keyboardType: keyboardType,
               obscureText: hide,
               textAlignVertical: TextAlignVertical.center,
               controller: inputController,

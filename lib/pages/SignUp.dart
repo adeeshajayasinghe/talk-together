@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:textapp/models/item.dart';
 import 'package:textapp/pages/Homepage.dart';
 import 'package:textapp/pages/logIn.dart';
-import 'package:textapp/servises/Auth.dart';
-import 'package:textapp/servises/googleSignIn.dart';
+import 'package:textapp/servises/SignUpApi.dart';
+
 import 'package:textapp/widgets/Title.dart';
 import 'package:textapp/widgets/inputs.dart';
 
@@ -12,6 +13,8 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final ApiService _apiService = ApiService();
     //controller to get inputs
     final fullName = TextEditingController();
     final email = TextEditingController();
@@ -19,9 +22,8 @@ class SignUp extends StatelessWidget {
     final password = TextEditingController();
 
     //Auth() class instance to call Authentication  method
-    Auth auth = Auth();
     //google Authentication
-    AuthService google = AuthService();
+
 
     //dispose
     void dispose() {
@@ -77,6 +79,7 @@ class SignUp extends StatelessWidget {
             ),
             //fullName input
             Inputs(
+              keyboardType: TextInputType.text,
                 hide: false,
                 title: "Full Name",
                 inputController: fullName,
@@ -84,6 +87,7 @@ class SignUp extends StatelessWidget {
 
             //email input
             Inputs(
+              keyboardType: TextInputType.emailAddress,
                 hide: false,
                 title: "Email",
                 inputController: email,
@@ -91,6 +95,7 @@ class SignUp extends StatelessWidget {
 
             //mobile input
             Inputs(
+              keyboardType: TextInputType.phone,
                 hide: false,
                 title: "Mobile",
                 inputController: mobile,
@@ -98,6 +103,7 @@ class SignUp extends StatelessWidget {
 
             //password input
             Inputs(
+              keyboardType: TextInputType.visiblePassword,
                 hide: true,
                 title: "Password",
                 inputController: password,
@@ -113,9 +119,7 @@ class SignUp extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
+                  child:
                       Container(
                         height: 50,
                         width: 250,
@@ -130,34 +134,26 @@ class SignUp extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                           ),
-                          onPressed: () {
-                            auth.signUpUser(context,fullName.text, mobile.text,
-                                email.text, password.text);
+                          onPressed: () async {
+                           final newItem = Item(
+                            fullName: fullName.text ,
+                            mobile: mobile.text,
+                            email: email.text,
+                            password: password.text,
+                            
+                        );
+                            // auth.signUpUser(context,fullName.text, mobile.text,
+                            //     email.text, password.text);
 
                             dispose();
+                            await _apiService.addItem(context, newItem);
                           },
                         ),
                       ),
 
-                      //google button
-                      Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                  color:
-                                      const Color.fromARGB(255, 7, 238, 255))),
-                          child: TextButton(
-                              onPressed: () {
-                                google.signInWithGoogle();
-                              },
-                              child: Image.asset(
-                                'Assets/7123025_logo_google_g_icon.png',
-                              )))
-                    ],
-                  ),
+                    
+                 
+                
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
