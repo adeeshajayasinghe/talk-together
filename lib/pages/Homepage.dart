@@ -7,6 +7,7 @@ import 'package:textapp/pages/logIn.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../servises/AuthManager.dart';
+import '../widgets/subscribeDrawer.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatelessWidget {
@@ -15,9 +16,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: drawers(),
       backgroundColor: const Color.fromARGB(255, 4, 21, 51),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+          iconTheme:
+              IconThemeData(color: const Color.fromARGB(255, 255, 255, 255)),
           backgroundColor: Colors.transparent,
           title: const Text(
             "Talk Together",
@@ -141,7 +145,7 @@ class HomePage extends StatelessWidget {
   }
 
   _getStarted(BuildContext context) {
-    if (AuthManager.isLoggedIn) {
+    if (AuthManager.isLoggedIn && AuthManager.subscribe) {
       Get.to(() => langugeSelection());
       //Get.to(Calling());
     } else {
@@ -150,7 +154,8 @@ class HomePage extends StatelessWidget {
         type: QuickAlertType.error,
         animType: QuickAlertAnimType.rotate,
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
-        title: "Please Login",
+        title: "Login/subscribe",
+        text: "you are not subscribed to the service or login credentials may be incorrect."
       );
     }
   }

@@ -7,8 +7,8 @@ class Subcription {
 
   Future<void> checkSubscription() async {
     final Map<String, dynamic> requestBody = {
-      "applicationId": "APP_008052",
-      "password": "9427dc08a34933a8b846e02148c63f5e",
+      // "applicationId": "APP_008052",
+      // "password": "9427dc08a34933a8b846e02148c63f5e",
       "subscriberId": "tel:94702868872",
       "action": "0"
     };

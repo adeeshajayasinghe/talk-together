@@ -14,9 +14,9 @@ class ApiServiceLogin {
   static const String baseUrl = 'http://3.86.243.195:4000/login';
 
   Future<void> login(
-      BuildContext context, String email, String password) async {
+      BuildContext context, String mobile, String password) async {
     final Map<String, dynamic> requestBody = {
-      'mobile': email,
+      'mobile': mobile,
       'password': password,
     };
 
@@ -42,7 +42,6 @@ class ApiServiceLogin {
     } else {
       AuthManager.token = response.body; //store the token
       AuthManager.login(); //setting the logged in user true
-
       
       // ignore: use_build_context_synchronously
       QuickAlert.show(
