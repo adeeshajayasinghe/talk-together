@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 import 'package:textapp/pages/SignUp.dart';
 import 'package:textapp/pages/logIn.dart';
 import 'package:textapp/servises/subcription.dart';
 import 'package:textapp/widgets/inputs.dart';
 
 import '../../servises/AuthManager.dart';
+import '../speechToText.dart';
 
 // ignore: must_be_immutable
 class TakeCall extends StatelessWidget {
-  TakeCall({super.key});
+  String toBeTranslateLanguage;
+  TakeCall({super.key, required this.toBeTranslateLanguage});
 
   final TextEditingController phonenNumber = TextEditingController();
   Subcription sub = Subcription();
@@ -77,7 +78,7 @@ class TakeCall extends StatelessWidget {
             child: Center(
                 child: ElevatedButton(
                     onPressed: () async {
-                      _callNumber();
+                      _callNumber(context,toBeTranslateLanguage);
                       
                     },
                     child: Text("call"))),
@@ -87,9 +88,13 @@ class TakeCall extends StatelessWidget {
     );
   }
 
-  _callNumber() async {
+  _callNumber(BuildContext context,String languageToBeTrnslate) async {
     String number = phonenNumber.text; //set the number here
     await FlutterPhoneDirectCaller.callNumber(number);
-    Get.to(SpeechToText());
+    // ignore: use_build_context_synchronously
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SpeechScreen(toBeTranslateLanguage: languageToBeTrnslate,)),
+    );
   }
 }
